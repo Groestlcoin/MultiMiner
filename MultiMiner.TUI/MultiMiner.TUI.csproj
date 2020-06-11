@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MultiMiner.TUI</RootNamespace>
     <AssemblyName>MultiMiner.TUI</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,10 +80,6 @@
       <Project>{95f6c880-7ab3-441b-8d41-28c0ad507b62}</Project>
       <Name>MultiMiner.Coinbase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MultiMiner.Coinchoose\MultiMiner.CoinChoose.csproj">
-      <Project>{d9b3f627-cb7a-454c-af8f-70c8fb584553}</Project>
-      <Name>MultiMiner.CoinChoose</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MultiMiner.CoinWarz\MultiMiner.CoinWarz.csproj">
       <Project>{5b2b2592-689a-4de2-815c-259427a3d101}</Project>
       <Name>MultiMiner.CoinWarz</Name>
@@ -96,10 +95,6 @@
     <ProjectReference Include="..\MultiMiner.ExchangeApi\MultiMiner.ExchangeApi.csproj">
       <Project>{dce499f9-0751-4088-b45b-67ae0e612362}</Project>
       <Name>MultiMiner.ExchangeApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMiner.MobileMiner\MultiMiner.MobileMiner.csproj">
-      <Project>{70622816-5853-4470-9432-9acda2e96089}</Project>
-      <Name>MultiMiner.MobileMiner</Name>
     </ProjectReference>
     <ProjectReference Include="..\MultiMiner.MultipoolApi\MultiMiner.MultipoolApi.csproj">
       <Project>{4af4b34a-07db-456b-9c58-b0863435fe54}</Project>
@@ -128,10 +123,6 @@
     <ProjectReference Include="..\MultiMiner.UX\MultiMiner.UX.csproj">
       <Project>{a23b916f-0e06-43bb-97a4-f61afe3a2f72}</Project>
       <Name>MultiMiner.UX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMiner.WhatMine\MultiMiner.WhatMine.csproj">
-      <Project>{4b0c2edd-9a3e-41af-b8ef-9a7a541d2e80}</Project>
-      <Name>MultiMiner.WhatMine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MultiMiner.WhatToMine\MultiMiner.WhatToMine.csproj">
       <Project>{6b967bb0-692a-4ad5-99ee-93c054f05792}</Project>

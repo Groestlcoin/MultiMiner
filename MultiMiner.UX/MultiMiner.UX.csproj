@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MultiMiner.UX</RootNamespace>
     <AssemblyName>MultiMiner.UX</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -59,7 +62,6 @@
     <Compile Include="Data\Configuration\PoolDefaults.cs" />
     <Compile Include="Data\CredentialsEventArgs.cs" />
     <Compile Include="Data\NotificationEventArgs.cs" />
-    <Compile Include="Data\PoolFeatureAnchors.cs" />
     <Compile Include="Data\ProgressEventArgs.cs" />
     <Compile Include="Data\PromptButtons.cs" />
     <Compile Include="Data\PromptIcon.cs" />
@@ -96,10 +98,6 @@
     <ProjectReference Include="..\MultiMiner.CoinApi\MultiMiner.CoinApi.csproj">
       <Project>{9e86f77a-68b9-4d72-82d2-855878ba8cb1}</Project>
       <Name>MultiMiner.CoinApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMiner.Coinchoose\MultiMiner.CoinChoose.csproj">
-      <Project>{d9b3f627-cb7a-454c-af8f-70c8fb584553}</Project>
-      <Name>MultiMiner.CoinChoose</Name>
     </ProjectReference>
     <ProjectReference Include="..\MultiMiner.CoinWarz\MultiMiner.CoinWarz.csproj">
       <Project>{5b2b2592-689a-4de2-815c-259427a3d101}</Project>
@@ -144,10 +142,6 @@
     <ProjectReference Include="..\MultiMiner.Utility\MultiMiner.Utility.csproj">
       <Project>{99b0f266-eff7-4416-8c36-8356396a11ca}</Project>
       <Name>MultiMiner.Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMiner.WhatMine\MultiMiner.WhatMine.csproj">
-      <Project>{4b0c2edd-9a3e-41af-b8ef-9a7a541d2e80}</Project>
-      <Name>MultiMiner.WhatMine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MultiMiner.WhatToMine\MultiMiner.WhatToMine.csproj">
       <Project>{6b967bb0-692a-4ad5-99ee-93c054f05792}</Project>

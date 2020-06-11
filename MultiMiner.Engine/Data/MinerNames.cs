@@ -11,5 +11,8 @@
         public const string LBSPHSGMiner = "LBSPHSGMiner";
         public const string AZNSGMiner = "AZNSGMiner";
         public const string MaxcoinCGMiner = "MaxcoinCGMiner";
+        public const string SGMinerGM = "SGMinerGM";
+        public const string SGMinerPascal = "SGMinerPascal";
+        public const string SGMinerNH = "SGMinerNH";
     }
 }

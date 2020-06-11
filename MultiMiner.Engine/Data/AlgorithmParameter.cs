@@ -14,5 +14,12 @@
         public const string AlgorithmX15 = "--algorithm x15";
         public const string AlgorithmNeoScrypt = "--algorithm neoscrypt";
         public const string AlgorithmLyra2RE = "--algorithm lyra2re";
+        public const string AlgorithmEthash = "--algorithm ethash";
+        public const string AlgorithmCryptoNight = "--algorithm cryptonight";
+        public const string AlgorithmEquihash = "--algorithm equihash";
+        public const string AlgorithmPascal = "--algorithm pascal";
+        public const string AlgorithmLbry = "--algorithm lbry";
+        public const string AlgorithmLyra2REv2 = "--algorithm lyra2rev2";
+        public const string AlgorithmNist5 = "--algorithm nist5";
     }
 }

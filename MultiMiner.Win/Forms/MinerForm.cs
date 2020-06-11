@@ -7,7 +7,7 @@ using MultiMiner.Engine.Data;
 using MultiMiner.Engine.Data.Configuration;
 using MultiMiner.ExchangeApi.Data;
 using MultiMiner.MobileMiner.Data;
-using MultiMiner.MobileMiner.Embed;
+//using MultiMiner.MobileMiner.Embed;
 using MultiMiner.Utility.OS;
 using MultiMiner.Utility.Serialization;
 using MultiMiner.UX.Data;
@@ -295,8 +295,14 @@ namespace MultiMiner.Win.Forms
             RefreshCoinApiLabel();
 
             if (apiConsoleControl != null)
-                apiConsoleControl.PopulateMiners(app.MiningEngine.MinerProcesses, app.NetworkDevicesConfiguration.Devices, app.LocalViewModel);
-            
+            {
+                //call ToList() so we can get a copy - otherwise risk:
+                //System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
+                List<MinerProcess> minerProcesses = app.MiningEngine.MinerProcesses.ToList();
+                List<NetworkDevices.NetworkDevice> networkDevices = app.NetworkDevicesConfiguration.Devices.ToList();
+                apiConsoleControl.PopulateMiners(minerProcesses, networkDevices, app.LocalViewModel);
+            }
+
             instancesContainer.Panel1Collapsed = !app.PerksConfiguration.EnableRemoting || (app.InstanceManager.Instances.Count <= 1);
             instancesControl.Visible = !instancesContainer.Panel1Collapsed;
             if (instancesControl.Visible)
@@ -553,9 +559,23 @@ namespace MultiMiner.Win.Forms
             listViewItem.SubItems["Fan"].Text = deviceViewModel.FanPercent > 0 ? deviceViewModel.FanPercent + "%" : String.Empty;
             listViewItem.SubItems["Intensity"].Text = deviceViewModel.Intensity;
 
-            listViewItem.SubItems["Pool"].Text = deviceViewModel.Pool.DomainFromHost();
+            RefreshPoolColumnForDeviceViewModel(listViewItem, deviceViewModel);
 
             PopulateIncomeForListViewItem(listViewItem, deviceViewModel);
+        }
+
+        private void RefreshPoolColumnForDeviceViewModel(ListViewItem listViewItem, DeviceViewModel deviceViewModel)
+        {
+            var pool = deviceViewModel.Pool.DomainFromHost();
+            if (app.ApplicationConfiguration.ShowPoolPort)
+            {
+                var port = deviceViewModel.Url.PortFromHost();
+                if (port.HasValue)
+                {
+                    pool = String.Format("{0}:{1}", pool, port.Value);
+                }
+            }
+            listViewItem.SubItems["Pool"].Text = pool;
         }
 
         private void RefreshDetailsAreaIfVisible()
@@ -1420,7 +1440,15 @@ namespace MultiMiner.Win.Forms
             {
                 string logDirectory = app.GetLogDirectory();
                 string logFilePath = Path.Combine(logDirectory, fileName);
-                Process.Start(logFilePath);
+                try
+                {
+                    // attempt to open with the app associated with .json
+                    Process.Start(logFilePath);
+                } catch (Win32Exception)
+                {
+                    // no app associated for .json - use Notepad (we're on Windows if we got this exception)
+                    Process.Start("notepad", logFilePath);
+                }
             }
         }
 
@@ -1545,6 +1573,14 @@ namespace MultiMiner.Win.Forms
                 AutoSizeListViewColumns();
                 RefreshDetailsAreaIfVisible();
             }
+            else if (e.Column == poolColumnHeader.Index)
+            {
+                app.ApplicationConfiguration.ShowPoolPort = !app.ApplicationConfiguration.ShowPoolPort;
+                app.ApplicationConfiguration.SaveApplicationConfiguration();
+                
+                app.RefreshAllDeviceStats();
+                AutoSizeListViewColumns();
+            }
         }
 
         private void columnHeaderMenu_Opening(object sender, CancelEventArgs e)
@@ -1634,7 +1670,7 @@ namespace MultiMiner.Win.Forms
         private bool briefMode;
         private void detailsToggleButton_ButtonClick(object sender, EventArgs e)
         {
-            SetBriefMode(!briefMode);
+            SetBriefMode(!briefMode, true);
             RefreshDetailsToggleButton();
         }
 
@@ -2008,14 +2044,14 @@ namespace MultiMiner.Win.Forms
         {
             ToggleSideBarButtons(sender);
 
-            ShowWebBrowser(WebBrowserProvider.DashboardController);
+            //ShowWebBrowser(WebBrowserProvider.DashboardController);
         }
 
         private void metricsButton_Click(object sender, EventArgs e)
         {
             ToggleSideBarButtons(sender);
 
-            ShowWebBrowser(WebBrowserProvider.HistoryController);
+            //ShowWebBrowser(WebBrowserProvider.HistoryController);
         }
 
         private void apiConsoleSideButton_Click(object sender, EventArgs e)
@@ -2178,7 +2214,7 @@ namespace MultiMiner.Win.Forms
                 ScanHardwareLocally();
 
             //after refreshing devices
-            app.SubmitMultiMinerStatistics();
+            //app.SubmitMultiMinerStatistics();
 
             //scan for Network Devices after scanning for local hardware
             //makes more sense visually
@@ -2209,7 +2245,7 @@ namespace MultiMiner.Win.Forms
 
             app.SetupCoalescedTimers();
 
-            app.SubmitMobileMinerPools();
+            //app.SubmitMobileMinerPools();
 
             RefreshViewFromViewModel();
 
@@ -2257,7 +2293,7 @@ namespace MultiMiner.Win.Forms
             app.NotificationReceived += HandleApplicationNotification;
             app.NotificationDismissed += HandleNotificationDismissed;
             app.CredentialsRequested += HandleCredentialsRequested;
-            app.MobileMinerAuthFailed += HandleMobileMinerAuthFailed;
+            //app.MobileMinerAuthFailed += HandleMobileMinerAuthFailed;
             app.DataModified += HandleAppViewModelModified;
             app.ProgressStarted += HandleProgressStarted;
             app.ProgressCompleted += HandleProgressCompleted;
@@ -2367,21 +2403,21 @@ namespace MultiMiner.Win.Forms
             RefreshViewFromViewModel();
         }
 
-        private void HandleMobileMinerAuthFailed(object sender, EventArgs e)
-        {
-            MessageBox.Show(String.Format(@"Your MobileMiner credentials are incorrect. Please check your MobileMiner settings in the Settings dialog.{0}{0}MobileMiner remote commands will now be disabled.", Environment.NewLine), 
-                @"Invalid Credentails", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //private void HandleMobileMinerAuthFailed(object sender, EventArgs e)
+        //{
+        //    MessageBox.Show(String.Format(@"Your MobileMiner credentials are incorrect. Please check your MobileMiner settings in the Settings dialog.{0}{0}MobileMiner remote commands will now be disabled.", Environment.NewLine), 
+        //        @"Invalid Credentails", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            //check to make sure there are no modal windows already
-            if (!ShowingModalDialog())
-            {
-                BeginInvoke((Action)(() =>
-                {
-                    //code to update UI
-                    app.ConfigureSettingsLocally();
-                }));
-            }
-        }
+        //    //check to make sure there are no modal windows already
+        //    if (!ShowingModalDialog())
+        //    {
+        //        BeginInvoke((Action)(() =>
+        //        {
+        //            //code to update UI
+        //            app.ConfigureSettingsLocally();
+        //        }));
+        //    }
+        //}
 
         private static bool ShowingModalDialog()
         {
@@ -2519,7 +2555,7 @@ namespace MultiMiner.Win.Forms
                 app.ApplicationConfiguration.SaveApplicationConfiguration();
                 app.PerksConfiguration.SavePerksConfiguration();
 
-                SetBriefMode(app.ApplicationConfiguration.BriefUserInterface);
+                SetBriefMode(app.ApplicationConfiguration.BriefUserInterface, true);
             }
         }
 
@@ -2553,7 +2589,7 @@ namespace MultiMiner.Win.Forms
         #endregion
 
         #region Application logic
-        private void SetBriefMode(bool newBriefMode)
+        private void SetBriefMode(bool newBriefMode, bool fromUI = false)
         {
             briefMode = newBriefMode;
             RefreshDetailsToggleButton();
@@ -2567,19 +2603,23 @@ namespace MultiMiner.Win.Forms
 
                 CloseDetailsArea();
                 HideAdvancedPanel();
-                WindowState = FormWindowState.Normal;
 
-                int newWidth = deviceListView.Columns.Cast<ColumnHeader>().Sum(column => column.Width);
-                newWidth += 40; //needs to be pretty wide for e.g. Aero Basic
-                newWidth = Math.Max(newWidth, 300);
-                //don't (automatically) set the width to crop notifications
-                newWidth = Math.Max(newWidth, notificationsControl.Width + 24);
+                if (fromUI)
+                {
+                    WindowState = FormWindowState.Normal;
 
-                Size = new Size(newWidth, 400);
+                    int newWidth = deviceListView.Columns.Cast<ColumnHeader>().Sum(column => column.Width);
+                    newWidth += 40; //needs to be pretty wide for e.g. Aero Basic
+                    newWidth = Math.Max(newWidth, 300);
+                    //don't (automatically) set the width to crop notifications
+                    newWidth = Math.Max(newWidth, notificationsControl.Width + 24);
+
+                    Size = new Size(newWidth, 400);
+                }
             }
             else
             {
-                if (WindowState != FormWindowState.Maximized)
+                if (fromUI && (WindowState != FormWindowState.Maximized))
                 {
                     //use Math.Max so it won't size smaller to show more
                     Size = new Size(Math.Max(Size.Width, 720), Math.Max(Size.Height, 500));
@@ -2712,7 +2752,13 @@ namespace MultiMiner.Win.Forms
         private void ShowApiConsole()
         {
             if (apiConsoleControl == null)
-                apiConsoleControl = new ApiConsoleControl(app.MiningEngine.MinerProcesses, app.NetworkDevicesConfiguration.Devices, app.LocalViewModel);
+            {
+                //call ToList() so we can get a copy - otherwise risk:
+                //System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
+                List<MinerProcess> minerProcesses = app.MiningEngine.MinerProcesses.ToList();
+                List<NetworkDevices.NetworkDevice> networkDevices = app.NetworkDevicesConfiguration.Devices.ToList();
+                apiConsoleControl = new ApiConsoleControl(minerProcesses, networkDevices, app.LocalViewModel);
+            }
 
             apiConsoleControl.Dock = DockStyle.Fill;
             apiConsoleControl.Parent = this;
@@ -2726,15 +2772,15 @@ namespace MultiMiner.Win.Forms
             advancedAreaContainer.BringToFront();
         }
 
-        private void ShowWebBrowser(string controller)
-        {
-            WebBrowser embeddedBrowser = WebBrowserProvider.GetWebBrowser(
-                controller,
-                app.ApplicationConfiguration.MobileMinerEmailAddress,
-                app.ApplicationConfiguration.MobileMinerApplicationKey);
+        //private void ShowWebBrowser(string controller)
+        //{
+        //    WebBrowser embeddedBrowser = WebBrowserProvider.GetWebBrowser(
+        //        controller,
+        //        app.ApplicationConfiguration.MobileMinerEmailAddress,
+        //        app.ApplicationConfiguration.MobileMinerApplicationKey);
 
-            ShowEmbeddedBrowser(embeddedBrowser);
-        }
+        //    ShowEmbeddedBrowser(embeddedBrowser);
+        //}
 
         private void ShowEmbeddedBrowser(WebBrowser embeddedBrowser)
         {

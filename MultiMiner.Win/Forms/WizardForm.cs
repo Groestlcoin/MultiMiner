@@ -1,10 +1,10 @@
 ﻿using MultiMiner.Engine;
 using MultiMiner.Engine.Data;
 using MultiMiner.Engine.Installers;
-using MultiMiner.MobileMiner.Helpers;
 using MultiMiner.Utility.OS;
 using MultiMiner.UX.Data;
 using MultiMiner.UX.Data.Configuration;
+using MultiMiner.UX.Extensions;
 using MultiMiner.Xgminer.Data;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,6 @@ namespace MultiMiner.Win.Forms
 
         private void mobileMinerInfoLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://web.mobileminerapp.com/");
         }
 
         private void WizardForm_Load(object sender, EventArgs e)
@@ -39,6 +38,7 @@ namespace MultiMiner.Win.Forms
             coinComboBox.SelectedIndex = 0;
             UpdateCheckStates();
             SetupPoolDefaults();
+            UpdateThanks();
         }
 
         private void SetupPoolDefaults()
@@ -136,25 +136,6 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
 
         private bool ValidateInput()
         {
-            if (wizardTabControl.SelectedTab == configureMobileMinerPage)
-            {
-                if (emailAddressEdit.Enabled && !String.IsNullOrEmpty(emailAddressEdit.Text) &&
-                    !InputValidation.IsValidEmailAddress(emailAddressEdit.Text))
-                {
-                    emailAddressEdit.Focus();
-                    MessageBox.Show("Please specify a valid email address. This must be the same address used to register MobileMiner.", "Invalid Value", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
-
-                if (appKeyEdit.Enabled && !String.IsNullOrEmpty(appKeyEdit.Text) &&
-                    !InputValidation.IsValidApplicationKey(appKeyEdit.Text))
-                {
-                    appKeyEdit.Focus();
-                    MessageBox.Show("Please specify a valid application key. If you are unsure, copy and paste the application key from the email you received.", "Invalid Value", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
-            }
-
             return true;
         }
 
@@ -261,18 +242,10 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
 
         private void remoteMonitoringCheck_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateMobileMinerEdits();
         }
 
         private void remoteCommandsCheck_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateMobileMinerEdits();
-        }
-
-        private void UpdateMobileMinerEdits()
-        {
-            emailAddressEdit.Enabled = remoteMonitoringCheck.Checked || remoteCommandsCheck.Checked;
-            appKeyEdit.Enabled = emailAddressEdit.Enabled;
         }
 
         public void CreateConfigurations(out Engine.Data.Configuration.Engine engineConfiguration,
@@ -303,10 +276,10 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
 
             Engine.Data.Configuration.Coin coinConfiguration = new Engine.Data.Configuration.Coin();
 
-            PoolGroup coin = null;
+            PoolGroup coin = coins.SingleOrDefault(c => c.Name.Equals(coinComboBox.Text));
 
-            //no Internet connection - only BTC and LTC were available
-            if (coins.Count == 0)
+            //no Internet connection (or coin API offline) - only BTC and LTC were available
+            if (coin == null)
             {
                 coin = new PoolGroup();
                 coin.Name = coinComboBox.Text;
@@ -347,10 +320,6 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
         {
             Application applicationConfiguraion = new Application
             {
-                MobileMinerMonitoring = remoteMonitoringCheck.Checked,
-                MobileMinerRemoteCommands = remoteCommandsCheck.Checked,
-                MobileMinerEmailAddress = emailAddressEdit.Text,
-                MobileMinerApplicationKey = appKeyEdit.Text,
                 BriefUserInterface = false
             };
 
@@ -386,7 +355,6 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://mobileminerapp.com/");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -405,27 +373,65 @@ To install " + MinerNames.BFGMiner + @" on Linux please consult the website for 
 
         private void poolFeaturesMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            extraNonceSubscriptToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatureAnchors.ExtraNonceSubscribe);
-            disableCoinbaseCheckToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatureAnchors.SkipCoinbaseCheck);
+            extraNonceSubscriptToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatures.XNSubFragment);
+            disableCoinbaseCheckToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatures.SkipCBCheckFragment);
         }
 
-        private void UpdatePoolFeature(string anchor, bool enabled)
+        private void UpdatePoolFeature(string fragment, bool enabled)
         {
-            string uriSegment = "/" + anchor;
-            if (enabled)
-                hostEdit.Text = hostEdit.Text + uriSegment;
-            else
-                hostEdit.Text = hostEdit.Text.Replace(uriSegment, String.Empty);
+            hostEdit.Text = PoolFeatures.UpdatePoolFeature(hostEdit.Text, fragment, enabled);
         }
 
         private void extraNonceSubscriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdatePoolFeature(PoolFeatureAnchors.ExtraNonceSubscribe, extraNonceSubscriptToolStripMenuItem.Checked);
+            UpdatePoolFeature(PoolFeatures.XNSubFragment, extraNonceSubscriptToolStripMenuItem.Checked);
         }
 
         private void disableCoinbaseCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdatePoolFeature(PoolFeatureAnchors.SkipCoinbaseCheck, disableCoinbaseCheckToolStripMenuItem.Checked);
+            UpdatePoolFeature(PoolFeatures.SkipCBCheckFragment, disableCoinbaseCheckToolStripMenuItem.Checked);
+        }
+
+        private void hostEdit_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string hostText = ((TextBox)sender).Text;
+            e.Cancel = !ValidateHostText(hostText);
+        }
+
+        private bool ValidateHostText(string hostText)
+        {
+            string prefix = "";
+            if (!hostText.Contains("://"))
+            {
+                prefix = "dummy://";
+            }
+            try
+            {
+                new Uri(prefix + hostText);
+            }
+            catch (UriFormatException)
+            {
+                MessageBox.Show(String.Format("The specified value '{0}' is not a valid URI.", hostText), "Invalid URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private void hostEdit_Validated(object sender, EventArgs e)
+        {
+            ParseHostForPort();
+        }
+
+        private void ParseHostForPort()
+        {
+            int newPort;
+            string newHost;
+
+            if (hostEdit.Text.ParseHostAndPort(out newHost, out newPort))
+            {
+                hostEdit.Text = newHost;
+                portEdit.Text = newPort.ToString();
+            }
         }
     }
 }

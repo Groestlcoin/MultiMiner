@@ -1,6 +1,8 @@
 ﻿using MultiMiner.Xgminer.Data;
 using System.Collections.Generic;
 using MultiMiner.Engine.Data.Configuration;
+using MultiMiner.Utility.OS;
+using System;
 
 namespace MultiMiner.Engine.Helpers
 {
@@ -9,360 +11,488 @@ namespace MultiMiner.Engine.Helpers
         public static void Seed(List<Data.Configuration.Coin> configurations)
         {
             //BTC
-            Coin donationConfiguration = CreateCoinConfiguration("BTC", "stratum+tcp://stratum.mining.eligius.st", 3334, "1LKwyLK4KhojsJUEvUx8bEmnmjohNMjRDM");
+            Coin donationConfiguration = CreateCoinConfiguration("BTC", "stratum+tcp://stratum.slushpool.com", 3333);
             configurations.Add(donationConfiguration);
 
             //LTC
-            donationConfiguration = CreateCoinConfiguration("LTC", "stratum+tcp://usa.wemineltc.com", 3335);
+            donationConfiguration = CreateCoinConfiguration("LTC", "stratum+tcp://us.litecoinpool.org", 3333, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
             //BQC
             donationConfiguration = CreateCoinConfiguration("BQC", "stratum+tcp://www.bbqpool.net", 3333);
             configurations.Add(donationConfiguration);
 
-            //FTC
-            donationConfiguration = CreateCoinConfiguration("FTC", "stratum+tcp://stratum.wemineftc.com", 4444);
-            configurations.Add(donationConfiguration);
-
-            //MEC
-            donationConfiguration = CreateCoinConfiguration("MEC", "stratum+tcp://us3.miningpool.co", 4202);
-            configurations.Add(donationConfiguration);
-
-            //PPC
-            donationConfiguration = CreateCoinConfiguration("PPC", "stratum+tcp://stratum.d7.lt", 3333);
-            configurations.Add(donationConfiguration);
-
-            //NVC
-            donationConfiguration = CreateCoinConfiguration("NVC", "stratum+tcp://stratum.khore.org", 3334);
-            configurations.Add(donationConfiguration);
-
-            //CAP
-            donationConfiguration = CreateCoinConfiguration("CAP", "stratum+tcp://cap.coinmine.pl", 8102);
-            configurations.Add(donationConfiguration);
-
+            //Coinmine.pl
             //ZET
-            donationConfiguration = CreateCoinConfiguration("ZET", "stratum+tcp://mine1.coinmine.pl", 6000);
-            configurations.Add(donationConfiguration);
-
-            //UNO
-            donationConfiguration = CreateCoinConfiguration("UNO", "stratum+tcp://de1.miningpool.co", 10701);
-            configurations.Add(donationConfiguration);
-
-            //DOGE
-            donationConfiguration = CreateCoinConfiguration("DOGE", "stratum+tcp://shibe.dogehouse.org", 3333);
-            configurations.Add(donationConfiguration);
-
-            //DOG
-            donationConfiguration = CreateCoinConfiguration("DOG", "stratum+tcp://shibe.dogehouse.org", 3333);
-            configurations.Add(donationConfiguration);
-
-            //ASC
-            donationConfiguration = CreateCoinConfiguration("ASC", "stratum+tcp://de1.miningpool.co", 10601);
-            configurations.Add(donationConfiguration);
-
-            //DGC
-            donationConfiguration = CreateCoinConfiguration("DGC", "stratum+tcp://us.miningpool.co", 9102);
-            configurations.Add(donationConfiguration);
-
-            //FST
-            donationConfiguration = CreateCoinConfiguration("FST", "stratum+tcp://de1.miningpool.co", 9203);
-            configurations.Add(donationConfiguration);
-
-            //FRK
-            donationConfiguration = CreateCoinConfiguration("FRK", "stratum+tcp://de2.miningpool.co", 4101);
-            configurations.Add(donationConfiguration);
-
-            //GLC
-            donationConfiguration = CreateCoinConfiguration("GLC", "stratum+tcp://de3.miningpool.co", 3905);
-            configurations.Add(donationConfiguration);
-
-            //GDC
-            donationConfiguration = CreateCoinConfiguration("GDC", "stratum+tcp://us.miningpool.co", 10001);
-            configurations.Add(donationConfiguration);
-
-            //XJO
-            donationConfiguration = CreateCoinConfiguration("XJO", "stratum+tcp://de1.miningpool.co", 11001);
-            configurations.Add(donationConfiguration);
-
-            //MOON
-            donationConfiguration = CreateCoinConfiguration("MOON", "stratum+tcp://ca1.miningpool.co", 9999);
-            configurations.Add(donationConfiguration);
-
-            //SBC
-            donationConfiguration = CreateCoinConfiguration("SBC", "stratum+tcp://au1.miningpool.co", 9203);
-            configurations.Add(donationConfiguration);
-            
-            //SPT
-            donationConfiguration = CreateCoinConfiguration("SPT", "stratum+tcp://spt.coinmine.pl", 9108);
+            donationConfiguration = CreateCoinConfiguration("ZET", "stratum+tcp://mine1.coinmine.pl", 6000, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
             //SRC
-            donationConfiguration = CreateCoinConfiguration("SRC", "stratum+tcp://mine2.coinmine.pl", 6020);
+            donationConfiguration = CreateCoinConfiguration("SRC", "stratum+tcp://mine2.coinmine.pl", 6020, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
-            //WDC
-            donationConfiguration = CreateCoinConfiguration("WDC", "stratum+tcp://wdc.coinmine.pl", 9090);
+            //DCR
+            donationConfiguration = CreateCoinConfiguration("DCR", "stratum+tcp://dcr.coinmine.pl", 2222, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
-            //YBC
-            donationConfiguration = CreateCoinConfiguration("YBC", "stratum+tcp://ybc.coinmine.pl", 9104);
+            //LBC
+            donationConfiguration = CreateCoinConfiguration("LBC", "stratum+tcp://lbc.coinmine.pl", 8787, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
-            //LEAF
-            donationConfiguration = CreateCoinConfiguration("LEAF", "stratum+tcp://de3.miningpool.co", 3931);
+            //PPC
+            donationConfiguration = CreateCoinConfiguration("PPC", "stratum+tcp://mine1.coinmine.pl", 6050, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
 
-            //CNC
-            donationConfiguration = CreateCoinConfiguration("CNC", "stratum+tcp://cnc.blocksolved.com", 3301);
-            configurations.Add(donationConfiguration);
-
-            //BEC
-            donationConfiguration = CreateCoinConfiguration("BEC", "stratum+tcp://ca1.miningpool.co", 20001);
-            configurations.Add(donationConfiguration);
-
-            //BIC
-            donationConfiguration = CreateCoinConfiguration("BIC", "stratum+tcp://de2.miningpool.co", 3388);
-            configurations.Add(donationConfiguration);
-
-            //DGB
-            donationConfiguration = CreateCoinConfiguration("DGB", "stratum+tcp://de2.miningpool.co", 3399);
-            configurations.Add(donationConfiguration);
-
-            //ICO
-            donationConfiguration = CreateCoinConfiguration("ICO", "stratum+tcp://de2.miningpool.co", 3391);
-            configurations.Add(donationConfiguration);
-
-            //KDC
-            donationConfiguration = CreateCoinConfiguration("KDC", "stratum+tcp://de3.miningpool.co", 3902);
-            configurations.Add(donationConfiguration);
-
-            //MINT
-            donationConfiguration = CreateCoinConfiguration("MINT", "stratum+tcp://de3.miningpool.co", 3356);
-            configurations.Add(donationConfiguration);
-
-            //MRY
-            donationConfiguration = CreateCoinConfiguration("MRY", "stratum+tcp://ca1.miningpool.co", 14322);
-            configurations.Add(donationConfiguration);
-
-            //PLT
-            donationConfiguration = CreateCoinConfiguration("PLT", "stratum+tcp://de2.miningpool.co", 9501);
-            configurations.Add(donationConfiguration);
-
-            //SMC
-            donationConfiguration = CreateCoinConfiguration("SMC", "stratum+tcp://de3.miningpool.co", 9057);
-            configurations.Add(donationConfiguration);
-
-            //TEA
-            donationConfiguration = CreateCoinConfiguration("TEA", "stratum+tcp://de3.miningpool.co", 3921);
-            configurations.Add(donationConfiguration);
-
-            //NEC
-            donationConfiguration = CreateCoinConfiguration("NEC", "stratum+tcp://de1.miningpool.co", 19664);
-            configurations.Add(donationConfiguration);
-
-            //TAG
-            donationConfiguration = CreateCoinConfiguration("TAG", "stratum+tcp://tag.hashfaster.com", 3335);
-            configurations.Add(donationConfiguration);
-
-            //BEE
-            donationConfiguration = CreateCoinConfiguration("BEE", "stratum+tcp://ca1.miningpool.co", 14804);
-            configurations.Add(donationConfiguration);
-            
-            //AIR
-            donationConfiguration = CreateCoinConfiguration("AIR", "stratum+tcp://us4.miningpool.co", 4252);
-            configurations.Add(donationConfiguration);
-
-            //888
-            donationConfiguration = CreateCoinConfiguration("888", "stratum+tcp://ca1.miningpool.co", 8888);
-            configurations.Add(donationConfiguration);
-
-            //GLD
-            donationConfiguration = CreateCoinConfiguration("GLD", "http://gld.minepool.net", 3333);
-            configurations.Add(donationConfiguration);
-
-            //RDD
-            donationConfiguration = CreateCoinConfiguration("RDD", "stratum+tcp://redd.oakpool.com", 3333);
-            configurations.Add(donationConfiguration);
-
-            //EMC2
-            donationConfiguration = CreateCoinConfiguration("EMC2", "stratum+tcp://emc2.cryptopools.com", 3006);
-            configurations.Add(donationConfiguration);
-
-            //MEOW
-            donationConfiguration = CreateCoinConfiguration("MEOW", "stratum+tcp://stratum-eu.meow.luckyminers.com", 3316);
-            configurations.Add(donationConfiguration);
-
-            //HBN
-            donationConfiguration = CreateCoinConfiguration("HBN", "stratum+tcp://hbn.stratum.smartmining.net", 17373);
-            configurations.Add(donationConfiguration);
-
-            //EZC
-            donationConfiguration = CreateCoinConfiguration("EZC", "stratum+tcp://mp.ultimatecoinpool.com", 6000);
-            configurations.Add(donationConfiguration);
-
-            //ELC
-            donationConfiguration = CreateCoinConfiguration("ELC", "stratum+tcp://elc.blocksolved.com", 3304);
-            configurations.Add(donationConfiguration);
-
-            //EAC
-            donationConfiguration = CreateCoinConfiguration("EAC", "stratum+tcp://us.lifeforce.info", 9090);
-            configurations.Add(donationConfiguration);
-
-            //CARB
-            donationConfiguration = CreateCoinConfiguration("CARB", "stratum+tcp://us4.miningpool.co", 15615);
-            configurations.Add(donationConfiguration);
-
-            //MZC
-            donationConfiguration = CreateCoinConfiguration("MZC", "stratum+tcp://de3.miningpool.co", 18383);
-            configurations.Add(donationConfiguration);
-
-            //SPC
-            donationConfiguration = CreateCoinConfiguration("SPC", "stratum+tcp://us4.miningpool.co", 18665);
-            configurations.Add(donationConfiguration);
-
-            //KGC
-            donationConfiguration = CreateCoinConfiguration("KGC", "stratum+tcp://mining.botpool.net", 5888);
-            configurations.Add(donationConfiguration);
-
-            //CAI
-            donationConfiguration = CreateCoinConfiguration("CAI", "stratum+tcp://caishen.nitro.org", 8888);
-            configurations.Add(donationConfiguration);
-
-            //BTB
-            donationConfiguration = CreateCoinConfiguration("BTB", "stratum+tcp://btb.scrypthp.com", 3333);
-            configurations.Add(donationConfiguration);
-
-            //VTC
-            donationConfiguration = CreateCoinConfiguration("VTC", "stratum+tcp://pool.verters.com", 4444);
-            configurations.Add(donationConfiguration);
-
+            //MiningPoolHub
             //DRK
             donationConfiguration = CreateCoinConfiguration("DRK", "stratum+tcp://us-east1.darkcoin.miningpoolhub.com", 20465);
-            configurations.Add(donationConfiguration);
-
-            //GPUC
-            donationConfiguration = CreateCoinConfiguration("GPUC", "stratum+tcp://gpu-stratum.hashfever.com", 3262);
-            configurations.Add(donationConfiguration);
-
-            //EXE
-            donationConfiguration = CreateCoinConfiguration("EXE", "stratum+tcp://stratum.execoin.net", 3333);
-            configurations.Add(donationConfiguration);
-
-            //SPA
-            donationConfiguration = CreateCoinConfiguration("SPA", "stratum+tcp://east1.us.stratum.dedicatedpool.com", 3372);
-            configurations.Add(donationConfiguration);
-
-            //HIRO
-            donationConfiguration = CreateCoinConfiguration("HIRO", "stratum+tcp://stratum.forkpool.com", 6347);
             configurations.Add(donationConfiguration);
 
             //MAX
             donationConfiguration = CreateCoinConfiguration("MAX", "stratum+tcp://us-east1.maxcoin.miningpoolhub.com", 20461);
             configurations.Add(donationConfiguration);
 
-            //Bitmark
-            donationConfiguration = CreateCoinConfiguration("BTM", "stratum+tcp://de3.miningpool.co", 22011);
-            configurations.Add(donationConfiguration);
-
-            //Cannabiscoin
-            donationConfiguration = CreateCoinConfiguration("CANN", "stratum+tcp://de2.miningpool.co", 42000);
-            configurations.Add(donationConfiguration);
-
-            //Syscoin
-            donationConfiguration = CreateCoinConfiguration("SYS", "stratum+tcp://de2.miningpool.co", 22222);
-            configurations.Add(donationConfiguration);
-
-            //Terracoin
-            donationConfiguration = CreateCoinConfiguration("TRC", "stratum+tcp://trc.coin-pool.org", 3340);
-            configurations.Add(donationConfiguration);
-
-            //eMark
-            donationConfiguration = CreateCoinConfiguration("DEM", "stratum+tcp://dem.coin-pool.org", 3453);
-            configurations.Add(donationConfiguration);
-
-            //TEKcoin
-            donationConfiguration = CreateCoinConfiguration("TEK", "stratum+tcp://pool.dsync.net", 6666);
-            configurations.Add(donationConfiguration);
-
-            //Takcoin
-            donationConfiguration = CreateCoinConfiguration("TAK", "stratum+tcp://tak.minebig.com", 3339);
-            configurations.Add(donationConfiguration);
-
-            //YAC
-            donationConfiguration = CreateCoinConfiguration("YAC", "stratum+tcp://yac.coinmine.pl", 9088);
-            configurations.Add(donationConfiguration);
-
-            //GRS
-            donationConfiguration = CreateCoinConfiguration("GRS", "stratum+tcp://grs.suprnova.cc", 5544);
-            configurations.Add(donationConfiguration);
-
-            //NiceHash / WestHash
-            //Scrypt
-            donationConfiguration = CreateCoinConfiguration("NiceHash:Scrypt", "stratum+tcp://stratum.westhash.com/#xnsub", 3333, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //SHA256
-            donationConfiguration = CreateCoinConfiguration("NiceHash:SHA256", "stratum+tcp://stratum.westhash.com/#xnsub", 3334, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //ScryptN
-            donationConfiguration = CreateCoinConfiguration("NiceHash:ScryptN", "stratum+tcp://stratum.westhash.com/#xnsub", 3335, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //X11
-            donationConfiguration = CreateCoinConfiguration("NiceHash:X11", "stratum+tcp://stratum.westhash.com/#xnsub", 3365, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //X13
-            donationConfiguration = CreateCoinConfiguration("NiceHash:X13", "stratum+tcp://stratum.westhash.com/#xnsub", 3337, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //Keccak
-            donationConfiguration = CreateCoinConfiguration("NiceHash:Keccak", "stratum+tcp://stratum.westhash.com/#xnsub", 3338, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //X15
-            donationConfiguration = CreateCoinConfiguration("NiceHash:X15", "stratum+tcp://stratum.westhash.com/#xnsub", 3339, "1LRtJBNQm9ALYt9gQjVK1TdRyQ6UPGUNCw");
-            configurations.Add(donationConfiguration);
-
-            //TIT
-            donationConfiguration = CreateCoinConfiguration("TIT", "stratum+tcp://titcoin.slugmonkeypool.net", 3336);
-            configurations.Add(donationConfiguration);
-
-            //ANC
-            donationConfiguration = CreateCoinConfiguration("ANC", "stratum+tcp://anc.fusionhash.com", 3337);
-            configurations.Add(donationConfiguration);
-
             //SXC
             donationConfiguration = CreateCoinConfiguration("SXC", "stratum+tcp://us-east1.sexcoin.miningpoolhub.com", 20463);
             configurations.Add(donationConfiguration);
 
-            //EMD
-            donationConfiguration = CreateCoinConfiguration("EMD", "stratum+tcp://us.lifeforce.info", 9090);
+            //ETH
+            donationConfiguration = CreateCoinConfiguration("ETH", "stratum+tcp://us-east.ethash-hub.miningpoolhub.com", 20535);
             configurations.Add(donationConfiguration);
 
-            //42
-            donationConfiguration = CreateCoinConfiguration("42", "stratum+tcp://42.mastermining.net", 4242);
+            //ADZ
+            donationConfiguration = CreateCoinConfiguration("ADZ", "stratum+tcp://hub.miningpoolhub.com", 20529);
             configurations.Add(donationConfiguration);
 
-            //ACOIN
-            donationConfiguration = CreateCoinConfiguration("ACOIN", "stratum+tcp://stratum.coin-miners.info", 3522);
+            //AUR
+            donationConfiguration = CreateCoinConfiguration("AUR", "stratum+tcp://hub.miningpoolhub.com", 20592);
             configurations.Add(donationConfiguration);
 
-            //BCX
-            donationConfiguration = CreateCoinConfiguration("BCX", "stratum+tcp://bcx.coin-pool.org", 3332);
+            //BTG
+            donationConfiguration = CreateCoinConfiguration("BTG", "stratum+tcp://us-east.equihash-hub.miningpoolhub.com", 20595);
             configurations.Add(donationConfiguration);
 
-            //MYR
-            donationConfiguration = CreateCoinConfiguration("MYR", "stratum+tcp://mine1.myr.nonce-pool.com", 3360);
+            //DASH
+            donationConfiguration = CreateCoinConfiguration("DASH", "stratum+tcp://hub.miningpoolhub.com", 20465);
             configurations.Add(donationConfiguration);
 
-            //QRK
-            donationConfiguration = CreateCoinConfiguration("QRK", "stratum+tcp://mine1coinmine.pl", 6010);
+            //ETN
+            donationConfiguration = CreateCoinConfiguration("ETN", "stratum+tcp://us-east.cryptonight-hub.miningpoolhub.com", 20596);
+            configurations.Add(donationConfiguration);
+
+            //ETC
+            donationConfiguration = CreateCoinConfiguration("ETC", "stratum+tcp://us-east.ethash-hub.miningpoolhub.com", 20555);
+            configurations.Add(donationConfiguration);
+
+            //EXP
+            donationConfiguration = CreateCoinConfiguration("EXP", "stratum+tcp://us-east.ethash-hub.miningpoolhub.com", 20565);
+            configurations.Add(donationConfiguration);
+
+            //FTC
+            donationConfiguration = CreateCoinConfiguration("FTC", "stratum+tcp://hub.miningpoolhub.com", 20510);
+            configurations.Add(donationConfiguration);
+
+            //GAME
+            donationConfiguration = CreateCoinConfiguration("GAME", "stratum+tcp://hub.miningpoolhub.com", 20576);
+            configurations.Add(donationConfiguration);
+
+            //GEO
+            donationConfiguration = CreateCoinConfiguration("GEO", "stratum+tcp://hub.miningpoolhub.com", 20524);
+            configurations.Add(donationConfiguration);
+
+            //BSTY
+            donationConfiguration = CreateCoinConfiguration("BSTY", "stratum+tcp://hub.miningpoolhub.com", 20543);
+            configurations.Add(donationConfiguration);
+
+            //GRS
+            donationConfiguration = CreateCoinConfiguration("GRS", "stratum+tcp://hub.miningpoolhub.com", 20486);
+            configurations.Add(donationConfiguration);
+
+            //MONA
+            donationConfiguration = CreateCoinConfiguration("MONA", "stratum+tcp://hub.miningpoolhub.com", 20593);
+            configurations.Add(donationConfiguration);
+
+            //XMR
+            donationConfiguration = CreateCoinConfiguration("XMR", "stratum+tcp://us-east.cryptonight-hub.miningpoolhub.com", 20580);
+            configurations.Add(donationConfiguration);
+
+            //MUSIC
+            donationConfiguration = CreateCoinConfiguration("MUSIC", "stratum+tcp://us-east.ethash-hub.miningpoolhub.com", 20585);
+            configurations.Add(donationConfiguration);
+
+            //SC
+            donationConfiguration = CreateCoinConfiguration("SC", "stratum+tcp://hub.miningpoolhub.com", 20550);
+            configurations.Add(donationConfiguration);
+
+            //START
+            donationConfiguration = CreateCoinConfiguration("START", "stratum+tcp://hub.miningpoolhub.com", 20509);
+            configurations.Add(donationConfiguration);
+
+            //XVG
+            donationConfiguration = CreateCoinConfiguration("XVG", "stratum+tcp://hub.miningpoolhub.com", 20523);
+            configurations.Add(donationConfiguration);
+
+            //VTC
+            donationConfiguration = CreateCoinConfiguration("VTC", "stratum+tcp://hub.miningpoolhub.com", 20507);
+            configurations.Add(donationConfiguration);
+
+            //ZEC
+            donationConfiguration = CreateCoinConfiguration("ZEC", "stratum+tcp://us-east.equihash-hub.miningpoolhub.com", 20570);
+            configurations.Add(donationConfiguration);
+
+            //ZCL
+            donationConfiguration = CreateCoinConfiguration("ZCL", "stratum+tcp://us-east.equihash-hub.miningpoolhub.com", 20575);
+            configurations.Add(donationConfiguration);
+
+            //XZC
+            donationConfiguration = CreateCoinConfiguration("XZC", "stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com", 20581);
+            configurations.Add(donationConfiguration);
+
+            //ZEN
+            donationConfiguration = CreateCoinConfiguration("ZEN", "stratum+tcp://us-east.equihash-hub.miningpoolhub.com", 20594);
+            configurations.Add(donationConfiguration);
+
+            //NiceHash
+            //Scrypt
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Scrypt", "stratum+tcp://scrypt.usa.nicehash.com/#xnsub", 3333, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //SHA256
+            donationConfiguration = CreateCoinConfiguration("NiceHash:SHA256", "stratum+tcp://sha256.usa.nicehash.com/#xnsub", 3334, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //ScryptN
+            donationConfiguration = CreateCoinConfiguration("NiceHash:ScryptN", "stratum+tcp://scryptnf.usa.nicehash.com/#xnsub", 3335, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //ScryptNf
+            donationConfiguration = CreateCoinConfiguration("NiceHash:ScryptNf", "stratum+tcp://scryptnf.usa.nicehash.com/#xnsub", 3335, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //X11
+            donationConfiguration = CreateCoinConfiguration("NiceHash:X11", "stratum+tcp://x11.usa.nicehash.com/#xnsub", 3336, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //X13
+            donationConfiguration = CreateCoinConfiguration("NiceHash:X13", "stratum+tcp://x13.usa.nicehash.com/#xnsub", 3337, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Keccak
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Keccak", "stratum+tcp://keccak.usa.nicehash.com/#xnsub", 3338, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //X15
+            donationConfiguration = CreateCoinConfiguration("NiceHash:X15", "stratum+tcp://x15.usa.nicehash.com/#xnsub", 3339, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Nist5
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Nist5", "stratum+tcp://nist5.usa.nicehash.com/#xnsub", 3340, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //NeoScrypt
+            donationConfiguration = CreateCoinConfiguration("NiceHash:NeoScrypt", "stratum+tcp://neoscrypt.usa.nicehash.com/#xnsub", 3341, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Lyra2RE
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Lyra2RE", "stratum+tcp://lyra2re.usa.nicehash.com/#xnsub", 3342, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //WhirlpoolX
+            donationConfiguration = CreateCoinConfiguration("NiceHash:WhirlpoolX", "stratum+tcp://whirlpoolx.usa.nicehash.com/#xnsub", 3343, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Qubit
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Qubit", "stratum+tcp://qubit.usa.nicehash.com/#xnsub", 3344, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Quark
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Quark", "stratum+tcp://quark.usa.nicehash.com/#xnsub", 3345, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Axiom
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Axiom", "stratum+tcp://axiom.usa.nicehash.com/#xnsub", 3346, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Lyra2REv2
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Lyra2REv2", "stratum+tcp://lyra2rev2.usa.nicehash.com/#xnsub", 3347, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //ScryptJaneNf16
+            donationConfiguration = CreateCoinConfiguration("NiceHash:ScryptJane", "stratum+tcp://scryptjanenf16.usa.nicehash.com/#xnsub", 3348, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //ScryptJaneNf16
+            donationConfiguration = CreateCoinConfiguration("NiceHash:ScryptJaneNf16", "stratum+tcp://scryptjanenf16.usa.nicehash.com/#xnsub", 3348, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Blake256r8
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Blake256r8", "stratum+tcp://blake256r8.usa.nicehash.com/#xnsub", 3349, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Blake256r14
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Blake256r14", "stratum+tcp://blake256r14.usa.nicehash.com/#xnsub", 3350, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Blake256r8vnl
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Blake256r8vnl", "stratum+tcp://blake256r8vnl.usa.nicehash.com/#xnsub", 3351, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Hodl
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Hodl", "stratum+tcp://hodl.usa.nicehash.com/#xnsub", 3352, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //DaggerHashimoto
+            donationConfiguration = CreateCoinConfiguration("NiceHash:DaggerHashimoto", "stratum+tcp://daggerhashimoto.usa.nicehash.com/#xnsub", 3353, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Ethash
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Ethash", "stratum+tcp://daggerhashimoto.usa.nicehash.com/#xnsub", 3353, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Decred
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Decred", "stratum+tcp://decred.usa.nicehash.com/#xnsub", 3354, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //CryptoNight
+            donationConfiguration = CreateCoinConfiguration("NiceHash:CryptoNight", "stratum+tcp://cryptonight.usa.nicehash.com/#xnsub", 3355, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Lbry
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Lbry", "stratum+tcp://lbry.usa.nicehash.com/#xnsub", 3356, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Equihash
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Equihash", "stratum+tcp://equihash.usa.nicehash.com/#xnsub", 3357, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Pascal
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Pascal", "stratum+tcp://pascal.usa.nicehash.com/#xnsub", 3358, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //X11Gost
+            donationConfiguration = CreateCoinConfiguration("NiceHash:X11Gost", "stratum+tcp://x11gost.usa.nicehash.com/#xnsub", 3359, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Sia
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Sia", "stratum+tcp://sia.usa.nicehash.com/#xnsub", 3360, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Blake2s
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Blake2s", "stratum+tcp://blake2s.usa.nicehash.com/#xnsub", 3361, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //Skunk
+            donationConfiguration = CreateCoinConfiguration("NiceHash:Skunk", "stratum+tcp://skunk.usa.nicehash.com/#xnsub", 3362, "3MsRyFCYa53AfDLU9GgeZKF3AMaupPAALT");
+            configurations.Add(donationConfiguration);
+
+            //AkaiPool
+            //MUN
+            donationConfiguration = CreateCoinConfiguration("MUN", "stratum+tcp://stratum.aikapool.com", 7914);
+            configurations.Add(donationConfiguration);
+
+            //MDC
+            donationConfiguration = CreateCoinConfiguration("MDC", "stratum+tcp://stratum.aikapool.com", 7981);
+            configurations.Add(donationConfiguration);
+
+            //LINX
+            donationConfiguration = CreateCoinConfiguration("LINX", "stratum+tcp://stratum.aikapool.com", 7980);
+            configurations.Add(donationConfiguration);
+
+            //PINK
+            donationConfiguration = CreateCoinConfiguration("PINK", "stratum+tcp://stratum.aikapool.com", 7918);
+            configurations.Add(donationConfiguration);
+
+            //BELA
+            donationConfiguration = CreateCoinConfiguration("BELA", "stratum+tcp://stratum.aikapool.com", 7978);
+            configurations.Add(donationConfiguration);
+
+            //BLAZR
+            donationConfiguration = CreateCoinConfiguration("BLAZR", "stratum+tcp://stratum.aikapool.com", 7979);
+            configurations.Add(donationConfiguration);
+
+            //DOGE - defunct 1/9/2018, contacted pool support
+            donationConfiguration = CreateCoinConfiguration("DOGE", "stratum+tcp://stratum.aikapool.com", 7915);
+            configurations.Add(donationConfiguration);
+
+            //GEERT
+            donationConfiguration = CreateCoinConfiguration("GEERT", "stratum+tcp://stratum.aikapool.com", 7936);
+            configurations.Add(donationConfiguration);
+
+            //LUNA
+            donationConfiguration = CreateCoinConfiguration("LUNA", "stratum+tcp://stratum.aikapool.com", 7933);
+            configurations.Add(donationConfiguration);
+
+            //MEC
+            donationConfiguration = CreateCoinConfiguration("MEC", "stratum+tcp://stratum.aikapool.com", 7988);
+            configurations.Add(donationConfiguration);
+
+            //$$$
+            donationConfiguration = CreateCoinConfiguration("$$$", "stratum+tcp://stratum.aikapool.com", 7963);
+            configurations.Add(donationConfiguration);
+
+            //MOON
+            donationConfiguration = CreateCoinConfiguration("MOON", "stratum+tcp://stratum.aikapool.com", 7975);
+            configurations.Add(donationConfiguration);
+
+            //SKR
+            donationConfiguration = CreateCoinConfiguration("SKR", "stratum+tcp://stratum.aikapool.com", 7917);
+            configurations.Add(donationConfiguration);
+
+            //SFC
+            donationConfiguration = CreateCoinConfiguration("SFC", "stratum+tcp://stratum.aikapool.com", 7935);
+            configurations.Add(donationConfiguration);
+
+            //WDC
+            donationConfiguration = CreateCoinConfiguration("WDC", "stratum+tcp://stratum.aikapool.com", 7908);
+            configurations.Add(donationConfiguration);
+
+            //SNG
+            donationConfiguration = CreateCoinConfiguration("SNG", "stratum+tcp://stratum.aikapool.com", 9928);
+            configurations.Add(donationConfiguration);
+
+            //VOT
+            donationConfiguration = CreateCoinConfiguration("VOT", "stratum+tcp://stratum.aikapool.com", 9927);
+            configurations.Add(donationConfiguration);
+
+            //BTCZ
+            donationConfiguration = CreateCoinConfiguration("BTCZ", "stratum+tcp://stratum.aikapool.com", 9925);
+            configurations.Add(donationConfiguration);
+
+            //HUSH
+            donationConfiguration = CreateCoinConfiguration("HUSH", "stratum+tcp://stratum.aikapool.com", 9921);
+            configurations.Add(donationConfiguration);
+
+            //KMD
+            donationConfiguration = CreateCoinConfiguration("KMD", "stratum+tcp://stratum.aikapool.com", 9922);
+            configurations.Add(donationConfiguration);
+
+            //SHF
+            donationConfiguration = CreateCoinConfiguration("SHF", "stratum+tcp://stratum.aikapool.com", 9887);
+            configurations.Add(donationConfiguration);
+
+            //ELLA
+            donationConfiguration = CreateCoinConfiguration("ELLA", "stratum+tcp://stratum.aikapool.com", 9888);
+            configurations.Add(donationConfiguration);
+
+            //PGC
+            donationConfiguration = CreateCoinConfiguration("PGC", "stratum+tcp://stratum.aikapool.com", 9889);
+            configurations.Add(donationConfiguration);
+
+            //PIRL
+            donationConfiguration = CreateCoinConfiguration("PIRL", "stratum+tcp://stratum.aikapool.com", 9890);
+            configurations.Add(donationConfiguration);
+
+            //WHL
+            donationConfiguration = CreateCoinConfiguration("WHL", "stratum+tcp://stratum.aikapool.com", 9891);
+            configurations.Add(donationConfiguration);
+
+            //DBIX
+            donationConfiguration = CreateCoinConfiguration("DBIX", "stratum+tcp://stratum.aikapool.com", 9892);
+            configurations.Add(donationConfiguration);
+
+            //ELE
+            donationConfiguration = CreateCoinConfiguration("ELE", "stratum+tcp://stratum.aikapool.com", 9898);
+            configurations.Add(donationConfiguration);
+
+            //SWP
+            donationConfiguration = CreateCoinConfiguration("SWP", "stratum+tcp://stratum.aikapool.com", 7957);
+            configurations.Add(donationConfiguration);
+
+            //KZC
+            donationConfiguration = CreateCoinConfiguration("KZC", "stratum+tcp://stratum.aikapool.com", 7955);
+            configurations.Add(donationConfiguration);
+
+            //ERY
+            donationConfiguration = CreateCoinConfiguration("ERY", "stratum+tcp://stratum.aikapool.com", 7931);
+            configurations.Add(donationConfiguration);
+
+            //KURT
+            donationConfiguration = CreateCoinConfiguration("KURT", "stratum+tcp://stratum.aikapool.com", 7944);
+            configurations.Add(donationConfiguration);
+
+            //MAR
+            donationConfiguration = CreateCoinConfiguration("MAR", "stratum+tcp://stratum.aikapool.com", 7932);
+            configurations.Add(donationConfiguration);
+
+            //OLIT
+            donationConfiguration = CreateCoinConfiguration("OLIT", "stratum+tcp://stratum.aikapool.com", 7983);
+            configurations.Add(donationConfiguration);
+
+            //OZC
+            donationConfiguration = CreateCoinConfiguration("OZC", "stratum+tcp://stratum.aikapool.com", 7976);
+            configurations.Add(donationConfiguration);
+
+            //PXI
+            donationConfiguration = CreateCoinConfiguration("PXI", "stratum+tcp://stratum.aikapool.com", 7942);
+            configurations.Add(donationConfiguration);
+
+            //QBC
+            donationConfiguration = CreateCoinConfiguration("QBC", "stratum+tcp://stratum.aikapool.com", 7950);
+            configurations.Add(donationConfiguration);
+
+            //ORB
+            donationConfiguration = CreateCoinConfiguration("ORB", "stratum+tcp://stratum.aikapool.com", 7911);
+            configurations.Add(donationConfiguration);
+
+            //GBX
+            donationConfiguration = CreateCoinConfiguration("GBX", "stratum+tcp://stratum.aikapool.com", 7906);
+            configurations.Add(donationConfiguration);
+
+            //INN
+            donationConfiguration = CreateCoinConfiguration("INN", "stratum+tcp://stratum.aikapool.com", 7909);
+            configurations.Add(donationConfiguration);
+
+            //VIVO
+            donationConfiguration = CreateCoinConfiguration("VIVO", "stratum+tcp://stratum.aikapool.com", 7905);
+            configurations.Add(donationConfiguration);
+
+            //DSR
+            donationConfiguration = CreateCoinConfiguration("DSR", "stratum+tcp://stratum.aikapool.com", 7907);
+            configurations.Add(donationConfiguration);
+
+            //DIME
+            donationConfiguration = CreateCoinConfiguration("DIME", "stratum+tcp://stratum.aikapool.com", 7965);
+            configurations.Add(donationConfiguration);
+
+            //QRK - defunct 1/9/2018, contacted pool support
+            donationConfiguration = CreateCoinConfiguration("QRK", "stratum+tcp://stratum.aikapool.com", 7966);
+            configurations.Add(donationConfiguration);
+
+            //UBQ
+            donationConfiguration = CreateCoinConfiguration("UBQ", "stratum+tcp://ubiq.mixpools.org", 2120, "0x7fc389fe473278b14a62ddb3e2d73170905e4c97", "");
+            configurations.Add(donationConfiguration);
+
+            //BCH
+            donationConfiguration = CreateCoinConfiguration("BCH", "stratum+tcp://stratum.bcc.pool.bitcoin.com", 3333);
+            configurations.Add(donationConfiguration);
+
+            //BCC
+            donationConfiguration = CreateCoinConfiguration("BCC", "stratum+tcp://stratum.bcc.pool.bitcoin.com", 3333);
+            configurations.Add(donationConfiguration);
+
+            //NVC
+            donationConfiguration = CreateCoinConfiguration("NVC", "stratum+tcp://stratum.khore.org", 3335, "nwoolls", "mmdonations");
+            configurations.Add(donationConfiguration);
+
+            //DEM
+            donationConfiguration = CreateCoinConfiguration("DEM", "stratum+tcp://gcpool.eu", 3333);
+            configurations.Add(donationConfiguration);
+
+            //ETP
+            donationConfiguration = CreateCoinConfiguration("ETP", "stratum+tcp://etp.dodopool.com", 8008, "MLmsFE9UPCQCfrtzB4BmBoSjQHWarRSYT7");
+            configurations.Add(donationConfiguration);
+
+            //XJO
+            donationConfiguration = CreateCoinConfiguration("XJO", "stratum+tcp://thecoin.pw", 3680, "nwoolls", "mmdonations");
             configurations.Add(donationConfiguration);
         }
 
-        private static Data.Configuration.Coin CreateCoinConfiguration(string coinSymbol, string host, int port, string username = "nwoolls.mmdonations")
+        private static Data.Configuration.Coin CreateCoinConfiguration(string coinSymbol, string host, int port, string username = "nwoolls")
+        {
+            return CreateCoinConfiguration(coinSymbol, host, port, username, GetWorkerName());
+        }
+
+        private static Data.Configuration.Coin CreateCoinConfiguration(string coinSymbol, string host, int port, string username, string workerName)
         {
             Data.Configuration.Coin donationConfiguration = new Data.Configuration.Coin();
             donationConfiguration.PoolGroup.Id = coinSymbol;
@@ -374,9 +504,23 @@ namespace MultiMiner.Engine.Helpers
                 Username = username,
                 Password = "X"
             };
+
+            if (!String.IsNullOrEmpty(workerName))
+            {
+                donationPool.Username += "." + workerName;
+            }
+
             donationConfiguration.Pools.Add(donationPool);
 
             return donationConfiguration;
+        }
+
+        private static string GetWorkerName()
+        {
+            if (OSVersionPlatform.GetGenericPlatform() == PlatformID.Unix)
+                return "mmdonations";
+            else
+                return Fingerprint.Value().Replace("-", "");
         }
     }
 }

@@ -239,12 +239,17 @@ namespace MultiMiner.Xgminer
             {
                 string argument;
 
-                //trim Host to ensure proper formatting
-                //don't just concatenate - we need to support URI paths and #anchors
-                UriBuilder builder = new UriBuilder(pool.Host.Trim());
-                builder.Port = pool.Port;
-                string poolUri = builder.Uri.ToString();
-                
+                string poolUri;
+                try
+                {
+                    poolUri = pool.BuildPoolUri();
+                }
+                catch (UriFormatException ex)
+                {
+                    throw new MinerLaunchException(String.Format("The '{0}' pool host '{1}' is not a valid URI.", this.minerConfiguration.CoinName, pool.Host)
+                        + Environment.NewLine + Environment.NewLine + ex.Message);
+                }
+
                 if (pool.QuotaEnabled)
                     argument = string.Format("--quota \"{2};{0}\" -u {1}", poolUri, pool.Username, pool.Quota);
                 else
@@ -306,11 +311,6 @@ namespace MultiMiner.Xgminer
                     }
                 }
             }
-            
-            string minerName = Path.GetFileName(Path.GetDirectoryName(minerConfiguration.ExecutablePath));
-
-            if (minerConfiguration.Algorithm.MinerArguments.ContainsKey(minerName))
-                arguments = String.Format("{0} {1}", minerConfiguration.Algorithm.MinerArguments[minerName], arguments.TrimStart());
 
             if (minerConfiguration.ApiListen)
             {

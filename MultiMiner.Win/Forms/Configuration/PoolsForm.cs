@@ -201,6 +201,8 @@ namespace MultiMiner.Win.Forms.Configuration
         {
             if (coinConfigurationBindingSource.Current == null)
                 return;
+            //prevents a crash under Mono on macOS - "System.IndexOutOfRangeException: list position"
+            poolListBox.SelectedItem = null;
 
             Engine.Data.Configuration.Coin currentConfiguration = (Engine.Data.Configuration.Coin)coinConfigurationBindingSource.Current;
             adjustProfitCombo.SelectedIndex = (int)currentConfiguration.ProfitabilityAdjustmentType;
@@ -218,6 +220,9 @@ namespace MultiMiner.Win.Forms.Configuration
 
         private void MoveSelectedPool(int offset)
         {
+            if (miningPoolBindingSource.Current == null)
+                return;
+
             Object currentObject = miningPoolBindingSource.Current;
             int currentIndex = miningPoolBindingSource.IndexOf(currentObject);
             int newIndex = currentIndex + offset;
@@ -402,6 +407,7 @@ namespace MultiMiner.Win.Forms.Configuration
         private void miningPoolBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             PopulateWorkerNames();
+            PopulatePort();
         }
 
         private void PopulateWorkerNames()
@@ -422,6 +428,10 @@ namespace MultiMiner.Win.Forms.Configuration
         private void userNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             MiningPool currentPool = (MiningPool)miningPoolBindingSource.Current;
+            if (currentPool == null)
+            {
+                return;
+            }
 
             //if the password is blank
             if (String.IsNullOrEmpty(currentPool.Password))
@@ -443,13 +453,17 @@ namespace MultiMiner.Win.Forms.Configuration
         //parse the port out for folks that paste in host:port
         private void hostEdit_Validated(object sender, EventArgs e)
         {
-            if (miningPoolBindingSource.Current != null)
-                ParseHostForPort();
+            ParseHostForPort();
         }
 
         private void ParseHostForPort()
         {
             MiningPool currentPool = (MiningPool)miningPoolBindingSource.Current;
+            if (currentPool == null)
+            {
+                return;
+            }
+
             int newPort;
             string newHost;
 
@@ -457,6 +471,7 @@ namespace MultiMiner.Win.Forms.Configuration
             {
                 currentPool.Host = newHost;
                 currentPool.Port = newPort;
+                PopulatePort(); // we don't data-bind port, crashes on mono for invalid values
 
                 //required since we are validating this edit
                 hostEdit.Text = newHost;
@@ -551,13 +566,13 @@ namespace MultiMiner.Win.Forms.Configuration
 
         private void poolFeaturesMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            extraNonceSubscriptToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatureAnchors.ExtraNonceSubscribe);
-            disableCoinbaseCheckToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatureAnchors.SkipCoinbaseCheck);
+            extraNonceSubscriptToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatures.XNSubFragment);
+            disableCoinbaseCheckToolStripMenuItem.Checked = hostEdit.Text.Contains(PoolFeatures.SkipCBCheckFragment);
         }
 
         private void extraNonceSubscriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdatePoolFeature(PoolFeatureAnchors.ExtraNonceSubscribe, extraNonceSubscriptToolStripMenuItem.Checked);
+            UpdatePoolFeature(PoolFeatures.XNSubFragment, extraNonceSubscriptToolStripMenuItem.Checked);
         }
 
         private void featuresButton_Click(object sender, EventArgs e)
@@ -571,7 +586,7 @@ namespace MultiMiner.Win.Forms.Configuration
 
         private void disableCoinbaseCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdatePoolFeature(PoolFeatureAnchors.SkipCoinbaseCheck, disableCoinbaseCheckToolStripMenuItem.Checked);
+            UpdatePoolFeature(PoolFeatures.SkipCBCheckFragment, disableCoinbaseCheckToolStripMenuItem.Checked);
         }
 
         private void UpdatePoolFeature(string anchor, bool enabled)
@@ -590,5 +605,77 @@ namespace MultiMiner.Win.Forms.Configuration
             if (dialogResult == DialogResult.OK)
                 AddCoinConfiguration(multipoolChooseForm.SelectedMultipool);
         }
+
+        private void hostEdit_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string hostText = ((TextBox)sender).Text;
+            e.Cancel = !ValidateHostText(hostText);
+        }
+
+        private bool ValidateHostText(string hostText)
+        {
+            string prefix = "";
+            if (!hostText.Contains("://"))
+            {
+                prefix = "dummy://";
+            }
+            try
+            {
+                new Uri(prefix + hostText);
+            }
+            catch (UriFormatException)
+            {
+                MessageBox.Show(String.Format("The specified value '{0}' is not a valid URI.", hostText), "Invalid URI", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        // begin port handling - don't databind as it crashes on macOS when an invalid value is entered (e.g. alpha or no value - delete port)
+        private void portEdit_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string portText = ((TextBox)sender).Text;
+            e.Cancel = !ValidatePortText(portText);
+        }
+
+        private bool ValidatePortText(string portText)
+        {
+            int port;
+            bool isValid = Int32.TryParse(portText, out port);
+            if (isValid)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(String.Format("The specified value '{0}' is not a valid port.", portText), "Invalid Port", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private void portEdit_Validated(object sender, EventArgs e)
+        {
+            MiningPool currentPool = (MiningPool)miningPoolBindingSource.Current;
+            if (currentPool == null)
+            {
+                return;
+            }
+
+            string portText = ((TextBox)sender).Text;
+            currentPool.Port = Int32.Parse(portText); // already know it's valid from the Validating event
+        }
+
+        private void PopulatePort()
+        {
+            MiningPool currentPool = (MiningPool)miningPoolBindingSource.Current;
+            if (currentPool == null)
+            {
+                return;
+            }
+
+            portEdit.Text = currentPool.Port.ToString();
+        }
+
+        // end port handling
     }
 }

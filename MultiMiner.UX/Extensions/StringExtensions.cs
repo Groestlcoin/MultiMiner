@@ -29,7 +29,7 @@ namespace MultiMiner.UX.Extensions
 
             string domainName = host.Trim();
 
-            if (!host.Contains(":"))
+            if (!host.Contains("://"))
                 host = "http://" + host;
 
             try
@@ -61,6 +61,38 @@ namespace MultiMiner.UX.Extensions
             hostDomainNames[host] = domainName;
 
             return domainName;
+        }
+
+        private readonly static Dictionary<string, int> hostPorts = new Dictionary<string, int>();
+
+        public static int? PortFromHost(this string host)
+        {
+            if (String.IsNullOrEmpty(host))
+                return null;
+
+            if (hostPorts.ContainsKey(host))
+                return hostPorts[host];
+
+            int? port = null;
+
+            if (!host.Contains("://"))
+                host = "http://" + host;
+
+            try
+            {
+                Uri uri = new Uri(host);
+                if (uri.Port >= 0)
+                {
+                    port = uri.Port;
+                }
+            }
+            catch (UriFormatException)
+            {
+                // System.UriFormatException: Invalid URI: The hostname could not be parsed.
+                // don't crash - fall back on domainName = host (initialized above)
+            }
+
+            return port;
         }
 
         public static string ShortHostFromHost(this string host)
@@ -150,35 +182,41 @@ namespace MultiMiner.UX.Extensions
 
         public static bool ParseHostAndPort(this string hostAndPort, out string host, out int port)
         {
-            const char Separator = ':';
-            host = String.Empty;
-            port = 0;
-
-            if (hostAndPort.Contains(Separator))
+            host = null;
+            port = -1;
+            string prefix = "";
+            if (!hostAndPort.Contains("://"))
             {
-                string[] parts = hostAndPort.Split(Separator);
-                int newPort = 0;
-
-                if (Int32.TryParse(parts.Last(), out newPort))
-                {
-                    string newHost = String.Empty;
-
-                    //loop through all but last (- 1)
-                    for (int i = 0; i < parts.Length - 1; i++)
-                    {
-                        if (!String.IsNullOrEmpty(newHost))
-                            newHost = newHost + Separator;
-                        newHost = newHost + parts[i];
-                    }
-
-                    host = newHost;
-                    port = newPort;
-                    
-                    return true;
-                }
+                prefix = "dummy://";
+            }
+            Uri uri;
+            try
+            {
+                uri = new Uri(prefix + hostAndPort);
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
+            if (uri.Port == -1)
+            {
+                return false;
             }
 
-            return false;
+            port = uri.Port;
+            host = uri.Host + uri.PathAndQuery + uri.Fragment;
+
+            if (String.IsNullOrEmpty(prefix))
+            {
+                host = uri.Scheme + "://" + host;
+            }
+
+            host = host.TrimEnd('/');
+
+            // #A/#B going in would come out #A/%23B under .NET 4 (but not 4.5)
+            host = Uri.UnescapeDataString(host);
+
+            return true;
         }
 
     }
